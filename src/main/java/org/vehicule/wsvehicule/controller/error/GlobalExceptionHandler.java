@@ -1,4 +1,4 @@
-package org.vehicule.wsvehicule.error;
+package org.vehicule.wsvehicule.controller.error;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

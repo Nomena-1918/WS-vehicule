@@ -1,4 +1,4 @@
-package org.vehicule.wsvehicule.model;
+package org.vehicule.wsvehicule.model.business;
 
 import jakarta.persistence.*;
 import lombok.Data;

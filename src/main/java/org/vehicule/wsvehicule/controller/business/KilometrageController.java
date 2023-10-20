@@ -1,8 +1,8 @@
-package org.vehicule.wsvehicule.controller;
+package org.vehicule.wsvehicule.controller.business;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.vehicule.wsvehicule.model.Kilometrage;
+import org.vehicule.wsvehicule.model.business.Kilometrage;
 import org.vehicule.wsvehicule.service.KilometrageService;
 
 import java.util.List;

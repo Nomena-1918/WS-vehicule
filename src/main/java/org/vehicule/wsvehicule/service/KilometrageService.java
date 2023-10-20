@@ -2,8 +2,8 @@ package org.vehicule.wsvehicule.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.vehicule.wsvehicule.model.Kilometrage;
-import org.vehicule.wsvehicule.model.Vehicule;
+import org.vehicule.wsvehicule.model.business.Kilometrage;
+import org.vehicule.wsvehicule.model.business.Vehicule;
 import org.vehicule.wsvehicule.repository.KilometrageRepository;
 import org.vehicule.wsvehicule.repository.VehiculeRepository;
 

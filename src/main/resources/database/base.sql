@@ -11,5 +11,8 @@ create table kilometrage(
     date_trajet timestamp not null check ( date_trajet <= now() )
 );
 
-select * from vehicule;
-
+create table utilisateur(
+    id serial primary key,
+    email varchar(50) not null,
+    mdp varchar(200) not null
+);
