@@ -14,4 +14,12 @@ public class Utilisateur {
     private String email;
     @Column(name="mdp", nullable = false)
     private String mdp;
+
+    public Utilisateur(String email, String mdp) {
+        this.email = email;
+        this.mdp = mdp;
+    }
+
+    public Utilisateur() {
+    }
 }

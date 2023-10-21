@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface VehiculeRepository extends JpaRepository<Vehicule, Integer> {
     Vehicule findById(Long id);
-    @Query("select k from Kilometrage k order by k.id")
+    @Query("select v from Vehicule v order by v.id")
     List<Vehicule> findAll();
 }

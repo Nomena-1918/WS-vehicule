@@ -8,5 +8,4 @@ public class WsVehiculeApplication {
     public static void main(String[] args) {
         SpringApplication.run(WsVehiculeApplication.class, args);
     }
-
 }
