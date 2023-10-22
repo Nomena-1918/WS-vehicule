@@ -16,3 +16,10 @@ create table utilisateur(
     email varchar(50) not null,
     mdp varchar(200) not null
 );
+
+create table token_response(
+    id serial primary key,
+    idUtilisateur int references utilisateur(id),
+    token text not null,
+    date_expiration timestamp not null check (date_expiration > now())
+);

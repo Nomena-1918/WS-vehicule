@@ -3,14 +3,11 @@ package org.vehicule.wsvehicule.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.vehicule.wsvehicule.model.auth.TokenResponse;
 import org.vehicule.wsvehicule.model.auth.Utilisateur;
 import org.vehicule.wsvehicule.repository.TokenResponseRepository;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -27,7 +24,7 @@ public class TokenResponseService {
     }
 
     public Boolean isValidToken(String token) {
-        return tokenResponseRepository.findUtilisateurByValidToken(token).isPresent();
+        return tokenResponseRepository.findUtilisateurByValidToken(token.replace("Bearer ", "")).isPresent();
     }
 
     public Optional<TokenResponse> getValidToken(Utilisateur utilisateur) {

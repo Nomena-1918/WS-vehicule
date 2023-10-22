@@ -1,60 +1,68 @@
 package org.vehicule.wsvehicule.controller.auth;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
+
 import org.springframework.web.bind.annotation.*;
+import org.vehicule.wsvehicule.model.auth.TokenResponse;
 import org.vehicule.wsvehicule.model.auth.Utilisateur;
+import org.vehicule.wsvehicule.service.TokenResponseService;
 import org.vehicule.wsvehicule.service.UtilisateurService;
 
-import java.sql.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
+
+import static org.vehicule.wsvehicule.util.TokenGenerator.getJWTToken;
 
 
 @RestController
 @RequestMapping("/login")
 public class LoginController {
     private final UtilisateurService utilisateurService;
+    private final TokenResponseService tokenResponseService;
 
     @Autowired
-    public LoginController(UtilisateurService utilisateurService) {
+    public LoginController(UtilisateurService utilisateurService, TokenResponseService tokenResponseService) {
         this.utilisateurService = utilisateurService;
+        this.tokenResponseService = tokenResponseService;
+    }
+
+    @GetMapping("/print-all-headers")
+    public Map<String,String> getAllheaders(@RequestHeader Map<String,String> headers){
+        System.out.println("============== \n\n"+headers.get("authorization")+"\n\n==============");
+
+        return headers;
+    }
+
+    @GetMapping("test-token/{token}")
+    public Boolean test(@PathVariable String token) {
+        return tokenResponseService.isValidToken(token);
     }
 
     @GetMapping
-    public List<Utilisateur> readAll() {
-        return utilisateurService.readAll();
+    public List<Utilisateur> readAll(@RequestHeader Map<String,String> headers) {
+        if (tokenResponseService.validateAuthorization(headers))
+            return utilisateurService.readAll();
+        else
+            throw new RuntimeException("- Access Denied -");
     }
 
     @PostMapping
-    public String Login(@RequestBody Utilisateur utilisateur) {
-        if (utilisateurService.isRegisered(utilisateur))
-            return getJWTToken(utilisateur.getEmail());
-        else return "Not registered";
+    public TokenResponse Login(@RequestBody Utilisateur utilisateur) throws NoSuchAlgorithmException, InvalidKeyException {
+        Optional<TokenResponse> tr;
+
+        if (utilisateurService.isRegisered(utilisateur) != null) {
+            utilisateur = utilisateurService.isRegisered(utilisateur);
+            tr = tokenResponseService.getValidToken(utilisateur);
+            if (tr.isPresent()) {
+                return tr.get();
+            }
+            else
+                return tokenResponseService.insertToken(utilisateur, getJWTToken(utilisateur.getEmail()));
+        }
+        return new TokenResponse(utilisateur, "Utilisateur absent de la base de données");
     }
 
-    private String getJWTToken(String username) {
-        String secretKey = "mySecretKey";
-        List<GrantedAuthority> grantedAuthorities = AuthorityUtils
-                .commaSeparatedStringToAuthorityList("ROLE_USER");
 
-        String token = Jwts
-                .builder()
-                .setId("softtekJWT")
-                .setSubject(username)
-                .claim("authorities",
-                        grantedAuthorities.stream()
-                                .map(GrantedAuthority::getAuthority)
-                                .collect(Collectors.toList()))
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 600000))
-                .signWith(SignatureAlgorithm.HS512,
-                        secretKey.getBytes()).compact();
-
-        return "Bearer " + token;
-    }
 
 }

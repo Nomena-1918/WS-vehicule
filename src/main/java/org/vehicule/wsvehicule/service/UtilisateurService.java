@@ -19,8 +19,8 @@ public class UtilisateurService {
     }
 
 
-    public Boolean isRegisered(Utilisateur utilisateur) {
-        return utilisateurRepository.findUtilisateurByEmailAndMdp(utilisateur.getEmail(), utilisateur.getMdp()).isPresent();
+    public Utilisateur isRegisered(Utilisateur utilisateur) {
+        return utilisateurRepository.findUtilisateurByEmailAndMdp(utilisateur.getEmail(), utilisateur.getMdp()).get();
     }
 
     public List<Utilisateur> readAll() {
