@@ -2,6 +2,8 @@ package org.vehicule.wsvehicule.controller.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.vehicule.wsvehicule.model.auth.TokenResponse;
 import org.vehicule.wsvehicule.model.auth.Utilisateur;
@@ -27,24 +29,13 @@ public class LoginController {
         this.tokenResponseService = tokenResponseService;
     }
 
-    @GetMapping("/print-all-headers")
-    public Map<String,String> getAllheaders(@RequestHeader Map<String,String> headers){
-        System.out.println("============== \n\n"+headers.get("authorization")+"\n\n==============");
-
-        return headers;
-    }
-
-    @GetMapping("test-token/{token}")
-    public Boolean test(@PathVariable String token) {
-        return tokenResponseService.isValidToken(token);
-    }
 
     @GetMapping
-    public List<Utilisateur> readAll(@RequestHeader Map<String,String> headers) {
+    public ResponseEntity<List<Utilisateur>> readAll(@RequestHeader Map<String,String> headers) {
         if (tokenResponseService.validateAuthorization(headers))
-            return utilisateurService.readAll();
+            return new ResponseEntity<>(utilisateurService.readAll(), HttpStatus.OK);
         else
-            throw new RuntimeException("- Access Denied -");
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping
@@ -61,6 +52,23 @@ public class LoginController {
                 return tokenResponseService.insertToken(utilisateur, getJWTToken(utilisateur.getEmail()));
         }
         return new TokenResponse(utilisateur, "Utilisateur absent de la base de données");
+    }
+
+
+
+
+
+
+    @GetMapping("/print-all-headers")
+    public Map<String,String> getAllheaders(@RequestHeader Map<String,String> headers){
+        System.out.println("============== \n\n"+headers.get("authorization")+"\n\n==============");
+
+        return headers;
+    }
+
+    @GetMapping("/test-token/{token}")
+    public Boolean test(@PathVariable String token) {
+        return tokenResponseService.isValidToken(token);
     }
 
 
