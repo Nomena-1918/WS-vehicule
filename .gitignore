@@ -33,3 +33,4 @@ build/
 ### VS Code ###
 .vscode/
 src/main/java/org/vehicule/wsvehicule/.DS_Store
+.DS_Store
