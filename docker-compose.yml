@@ -11,7 +11,7 @@ services:
     depends_on:
       - db
   db:
-    build: src/main/resources/database/docker/Dockerfile
+    build: ./src/main/resources/database
     ports:
       - "5432:5432"
     environment:
