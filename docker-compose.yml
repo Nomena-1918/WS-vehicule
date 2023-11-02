@@ -3,7 +3,7 @@ services:
   springboot-service:
     build: .
     ports:
-      - 8081:8081
+      - "8081:8081"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/vehicule_ws
       - SPRING_DATASOURCE_USERNAME=nomena
@@ -11,9 +11,9 @@ services:
     depends_on:
       - db
   db:
-    image: postgres:latest
+    build: ./src/main/resources/database/docker/Dockerfile
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       - POSTGRES_DB=vehicule_ws
       - POSTGRES_USER=nomena
