@@ -18,5 +18,3 @@ INSERT INTO utilisateur (email, mdp) VALUES
 ('guitar@rocknroll.com', 'Strum4Ever$'),
 ('coding@geekworld.com', 'ILoveCoding#'),
 ('bookworm@library.com', 'PageTurner42!');
-
-select * from token_response;
