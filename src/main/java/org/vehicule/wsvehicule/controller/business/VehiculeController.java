@@ -1,6 +1,7 @@
 package org.vehicule.wsvehicule.controller.business;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.vehicule.wsvehicule.model.business.Vehicule;
 import org.vehicule.wsvehicule.model.business.Vehicule;
@@ -29,6 +30,7 @@ public class VehiculeController {
             return vehiculeService.readAll();
         else
             throw new RuntimeException("- Access Denied -");
+        //+HttpStatus.UNAUTHORIZED
     }
 
     @PostMapping

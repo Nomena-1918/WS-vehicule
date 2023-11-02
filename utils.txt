@@ -1,0 +1,2 @@
+# delete symlinks (Error: error resolving source context: worktree contains unstaged changes)
+find . -type l -exec rm {} \;
