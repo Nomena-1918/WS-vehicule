@@ -29,14 +29,10 @@ public class TokenResponse {
     private Timestamp date_expiration;
 
     public TokenResponse(Utilisateur utilisateur, String token) {
+        utilisateur.setMdp(null);
+        utilisateur.setId(null);
         this.utilisateur = utilisateur;
         this.token = token;
-    }
-
-    public TokenResponse(String token, Utilisateur utilisateur, Timestamp date_expiration) {
-        this.token = token;
-        this.utilisateur = utilisateur;
-        this.date_expiration = date_expiration;
     }
 
     public TokenResponse() {
