@@ -44,4 +44,15 @@ public class TokenResponseService {
         return token != null && isValidToken(token);
     }
 
+    public void expireToken(String token) {
+        Optional<TokenResponse> tr = tokenResponseRepository.findUtilisateurByValidToken(token.replace("Bearer ", ""));
+        if (tr.isPresent()) {
+            TokenResponse tokenResponse = tr.get();
+            tokenResponse.setDate_expiration(new Timestamp(System.currentTimeMillis()+1000));
+            tokenResponseRepository.save(tokenResponse);
+        }
+        else
+            throw new RuntimeException("- Token not found -");
+    }
+
 }

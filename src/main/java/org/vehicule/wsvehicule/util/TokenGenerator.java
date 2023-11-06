@@ -7,14 +7,17 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TokenGenerator {
 
     @Value("${custom.token.key}")
     private static String tokenKey;
 
-    public static String getJWTToken(String username) throws NoSuchAlgorithmException, InvalidKeyException {
-        String secretKey = tokenKey+System.currentTimeMillis();
+    public static String getToken(String username) throws NoSuchAlgorithmException, InvalidKeyException {
+        String secretKey = System.currentTimeMillis()+tokenKey;
 
         // Créer une instance de HMAC avec l'algorithme SHA-256
         Mac hmac = Mac.getInstance("HmacSHA256");
@@ -25,6 +28,11 @@ public class TokenGenerator {
         byte[] macBytes = hmac.doFinal(username.getBytes());
 
         // Convertir le résultat en une représentation en base64
-        return Base64.getEncoder().encodeToString(macBytes);
+        String str = Base64.getEncoder().encodeToString(macBytes);
+        List <Character> list = str.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
+        Collections.shuffle(list);
+
+        return list.stream().map(String::valueOf).collect(Collectors.joining());
+
     }
 }

@@ -1,6 +1,8 @@
 package org.vehicule.wsvehicule.controller.business;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.vehicule.wsvehicule.model.business.Kilometrage;
 import org.vehicule.wsvehicule.service.KilometrageService;
@@ -23,43 +25,45 @@ public class KilometrageController {
     }
 
     @GetMapping
-    public List<Kilometrage> readAll(@RequestHeader Map<String,String> headers) {
+    public ResponseEntity<List<Kilometrage>> readAll(@RequestHeader Map<String,String> headers) {
         if (tokenResponseService.validateAuthorization(headers))
-            return kilometrageService.readAll();
+            return new ResponseEntity<>(kilometrageService.readAll(), HttpStatus.OK);
         else
-            throw new RuntimeException("- Access Denied -");
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
     @PostMapping
-    public void createKilometrage(@RequestHeader Map<String,String> headers, @RequestBody Kilometrage kilometrage) {
+    public ResponseEntity<Kilometrage> createKilometrage(@RequestHeader Map<String,String> headers, @RequestBody Kilometrage kilometrage) {
         if (tokenResponseService.validateAuthorization(headers))
-            kilometrageService.create(kilometrage);
+            return new ResponseEntity<>(kilometrageService.create(kilometrage), HttpStatus.CREATED);
         else
-            throw new RuntimeException("- Access Denied -");
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
     @GetMapping("/{id}")
-    public Optional<Kilometrage> readKilometrage(@RequestHeader Map<String,String> headers, @PathVariable Long id) {
+    public ResponseEntity<Optional<Kilometrage>> readKilometrage(@RequestHeader Map<String,String> headers, @PathVariable Long id) {
         if (tokenResponseService.validateAuthorization(headers))
-            return kilometrageService.read(id);
+            return new ResponseEntity<>(kilometrageService.read(id), HttpStatus.OK);
         else
-            throw new RuntimeException("- Access Denied -");
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
     @PutMapping("/{id}")
-    public void updateKilometrage(@RequestHeader Map<String,String> headers, @PathVariable Long id, @RequestBody Kilometrage kilometrage) {
+    public ResponseEntity<Kilometrage> updateKilometrage(@RequestHeader Map<String,String> headers, @PathVariable Long id, @RequestBody Kilometrage kilometrage) {
         if (tokenResponseService.validateAuthorization(headers))
-            kilometrageService.update(id, kilometrage);
+           return new ResponseEntity<>(kilometrageService.update(id, kilometrage), HttpStatus.OK);
         else
-            throw new RuntimeException("- Access Denied -");
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteKilometrage(@RequestHeader Map<String,String> headers, @PathVariable Integer id) {
-        if (tokenResponseService.validateAuthorization(headers))
+    public ResponseEntity<Object> deleteKilometrage(@RequestHeader Map<String,String> headers, @PathVariable Integer id) {
+        if (tokenResponseService.validateAuthorization(headers)) {
             kilometrageService.delete(id);
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
         else
-            throw new RuntimeException("- Access Denied -");
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
     }
 
 }
