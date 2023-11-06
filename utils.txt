@@ -1,2 +1,5 @@
 # delete symlinks (Error: error resolving source context: worktree contains unstaged changes)
 find . -type l -exec rm {} \;
+
+# delete .DS_Store files
+find . -name .DS_Store -print0 | xargs -0 git rm --ignore-unmatch
