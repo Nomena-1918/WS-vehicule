@@ -72,11 +72,6 @@ public class AuthController {
     }
 
 
-
-
-
-
-
     @GetMapping("/print-all-headers")
     public Map<String,String> getAllheaders(@RequestHeader Map<String,String> headers){
         System.out.println("============== \n\n"+headers.get("authorization")+"\n\n==============");
