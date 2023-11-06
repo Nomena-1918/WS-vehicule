@@ -61,7 +61,6 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
-                    <outputDirectory>${project.basedir}</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>

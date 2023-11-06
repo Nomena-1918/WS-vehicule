@@ -29,8 +29,6 @@ public class TokenResponse {
     private Timestamp date_expiration;
 
     public TokenResponse(Utilisateur utilisateur, String token) {
-        utilisateur.setMdp(null);
-        utilisateur.setId(null);
         this.utilisateur = utilisateur;
         this.token = token;
     }

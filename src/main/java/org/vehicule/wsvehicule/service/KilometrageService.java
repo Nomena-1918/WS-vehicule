@@ -22,14 +22,14 @@ public class KilometrageService {
     }
 
 
-    public void create(Kilometrage kilometrage) {
+    public Kilometrage create(Kilometrage kilometrage) {
         Vehicule vehicule = kilometrage.getVehicule();
         if(vehicule != null && (vehicule.getId() == null ||
                 vehiculeRepository.findById(vehicule.getId()) == null)) {
             vehicule = vehiculeRepository.save(vehicule);
         }
         kilometrage.setVehicule(vehicule);
-        kilometrageRepository.save(kilometrage);
+        return kilometrageRepository.save(kilometrage);
     }
 
 
@@ -41,14 +41,14 @@ public class KilometrageService {
         return kilometrageRepository.findAll();
     }
 
-    public void update(Long id, Kilometrage kilometrage) {
+    public Kilometrage update(Long id, Kilometrage kilometrage) {
         if (kilometrage == null)
-            return;
+            return null;
 
         Optional<Kilometrage> data  = kilometrageRepository.findById(id);
 
         if (data.isEmpty())
-            return;
+            return null;
 
         Kilometrage precedent = data.get();
 
@@ -64,7 +64,7 @@ public class KilometrageService {
         if (kilometrage.getDate_trajet() != null)
             precedent.setDate_trajet(kilometrage.getDate_trajet());
 
-        kilometrageRepository.save(precedent);
+        return kilometrageRepository.save(precedent);
     }
 
     public void delete(Integer id) {

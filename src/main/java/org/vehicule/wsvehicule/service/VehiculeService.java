@@ -20,21 +20,21 @@ public class VehiculeService {
         return vehiculeRepository.findAll();
     }
 
-    public void create(Vehicule vehicule) {
-        vehiculeRepository.save(vehicule);
+    public Vehicule create(Vehicule vehicule) {
+        return vehiculeRepository.save(vehicule);
     }
 
     public Vehicule read(Long id) {
         return vehiculeRepository.findById(id);
     }
 
-    public void update(Long id, Vehicule vehicule) {
+    public Vehicule update(Long id, Vehicule vehicule) {
         if (vehicule==null)
-            return;
+            return null;
 
         Vehicule precedent  = vehiculeRepository.findById(id);
         precedent.setNom_modele(vehicule.getNom_modele());
-        vehiculeRepository.save(precedent);
+        return vehiculeRepository.save(precedent);
     }
 
     public void delete(Integer id) {
